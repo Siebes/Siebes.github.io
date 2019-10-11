@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Development &#8211; Ryan Siebert&#039;s Website</title>
+	<atom:link href="http://daedalus/category/development/feed/" rel="self" type="application/rss+xml" />
+	<link>http://siebert.dev/</link>
+	<description></description>
+	<lastBuildDate>Sat, 12 Nov 2016 02:00:41 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=5.2.3</generator>
+	<item>
+		<title>PVR Slackbot</title>
+		<link>https://siebert.dev/2016/11/12/pvr-slackbot/</link>
+				<comments>https://siebert.dev/2016/11/12/pvr-slackbot/#respond</comments>
+				<pubDate>Sat, 12 Nov 2016 02:00:41 +0000</pubDate>
+		<dc:creator><![CDATA[ryan]]></dc:creator>
+				<category><![CDATA[Development]]></category>
+
+		<guid isPermaLink="false">https://siebert.dev/?p=447</guid>
+				<description><![CDATA[I’ve made a&#160;Slackbot&#160;that interacts with both the&#160;CouchPotato&#160;and&#160;Sonarr&#160;API and allows you to add movies and tv shows to your wanted/monitored lists via direct messages to the bot. Its written in Node JS using the&#160;Botkit&#160;framework. Please give it a download or use this&#160;docker image&#160;and run it by filling out this docker-compose.yml Any feedback/bug reports can be done [&#8230;]]]></description>
+								<content:encoded><![CDATA[
+<p>I’ve made a&nbsp;<a href="https://github.com/Siebes/pvr-slackbot">Slackbot</a>&nbsp;that interacts with both the&nbsp;<a href="https://couchpota.to/">CouchPotato</a>&nbsp;and&nbsp;<a href="https://github.com/Sonarr/Sonarr">Sonarr</a>&nbsp;API and allows you to add movies and tv shows to your wanted/monitored lists via direct messages to the bot. Its written in Node JS using the&nbsp;<a href="https://github.com/howdyai/botkit">Botkit</a>&nbsp;framework. Please give it a download or use this&nbsp;<a href="https://hub.docker.com/r/siebes/pvr-slackbot/">docker image</a>&nbsp;and run it by filling out this docker-compose.yml</p>
+
+
+<pre class="brush: plain; title: ; notranslate">
+version: '2'
+services:
+  pvr-slackbot:
+    restart: always
+    image: siebes/pvr-slackbot:latest
+    environment:
+    - &quot;SLACK_TOKEN=&quot;
+    - &quot;SONARR_KEY=&quot;
+    - &quot;SONARR_HOST=&quot;
+    - &quot;SONARR_PORT=&quot;
+    - &quot;CP_KEY=&quot;
+    - &quot;CP_HOST=&quot;
+    - &quot;CP_PORT=&quot;
+</pre>
+
+
+<p>Any feedback/bug reports can be done via the github page. Pull requests are also welcome.</p>
+]]></content:encoded>
+							<wfw:commentRss>https://siebert.dev/2016/11/12/pvr-slackbot/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+							</item>
+	</channel>
+</rss>

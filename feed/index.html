@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Ryan Siebert&#039;s Website</title>
+	<atom:link href="http://daedalus/feed/" rel="self" type="application/rss+xml" />
+	<link>http://siebert.dev/</link>
+	<description></description>
+	<lastBuildDate>Mon, 09 Sep 2019 11:07:19 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=5.2.3</generator>
+	<item>
+		<title>Performance Fixing</title>
+		<link>https://siebert.dev/2019/09/09/performance-fixing/</link>
+				<comments>https://siebert.dev/2019/09/09/performance-fixing/#respond</comments>
+				<pubDate>Mon, 09 Sep 2019 11:07:19 +0000</pubDate>
+		<dc:creator><![CDATA[ryan]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[angular]]></category>
+		<category><![CDATA[performance]]></category>
+
+		<guid isPermaLink="false">https://siebert.dev/?p=461</guid>
+				<description><![CDATA[Last week I had the honor (horror?) of trying to track down a performance issue we were facing in Angular when clicking on a filter that redraws a section of the page. Below is a screenshot of a recording I did of performance when clicking on the filter. It looks very similar to what I [&#8230;]]]></description>
+								<content:encoded><![CDATA[
+<figure class="wp-block-embed-twitter wp-block-embed is-type-rich is-provider-twitter"><div class="wp-block-embed__wrapper">
+<blockquote class="twitter-tweet" data-width="550" data-dnt="true"><p lang="en" dir="ltr">Feature programming:<br><br>1 day: <br>~1000 lines of code.<br><br>Bug fixing:<br><br>1 day:<br>~10 lines of code<br><br>Performance fixing:<br><br>7 days:<br>1 command line flag in a config file inside of docker file</p>&mdash; Sam Saccone (@samccone) <a href="https://twitter.com/samccone/status/1170134263812870144?ref_src=twsrc%5Etfw">September 7, 2019</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div></figure>
+
+
+
+<p>Last week I had the honor (horror?) of trying to track down a performance issue we were facing in Angular when clicking on a filter that redraws a section of the page.</p>
+
+
+
+<p>Below is a screenshot of a recording I did of performance when clicking on the filter. It looks very similar to what I stared at pulling my hair out for a good few days.</p>
+
+
+
+<figure class="wp-block-image alignwide"><img src="https://siebert.dev/wp-content/uploads/2019/09/performance-1-1024x262.png" alt="" class="wp-image-462" srcset="https://siebert.dev/wp-content/uploads/2019/09/performance-1-1024x262.png 1024w, https://siebert.dev/wp-content/uploads/2019/09/performance-1-300x77.png 300w, https://siebert.dev/wp-content/uploads/2019/09/performance-1-768x196.png 768w, https://siebert.dev/wp-content/uploads/2019/09/performance-1-434x111.png 434w, https://siebert.dev/wp-content/uploads/2019/09/performance-1-868x222.png 868w, https://siebert.dev/wp-content/uploads/2019/09/performance-1.png 1472w" sizes="(max-width: 1024px) 100vw, 1024px" /><figcaption>The click event is taking 4 seconds</figcaption></figure>
+
+
+
+<p>Looking down the call stack I could see change detection going crazy making me think this was something Angular related. I scoured through all the code that is run when redrawing the page. It looked fine; not 100% efficient but innocuous.</p>
+
+
+
+<p>Then I noticed something very strange&#8230; in my local development environment everything was fast. Which made sense because a click event taking 4 seconds would drive us developers crazy. But as soon as it was deployed to the environment it would turn to garbage.</p>
+
+
+
+<p>To prove it was environment related I asked around when people started to notice issues and deployed some code from early in the year which still had the same performance issues.</p>
+
+
+
+<p>Next I started deleting scripts &#8211; starting off with the biggest culprits (analytics &#8211; which wasn&#8217;t it) and working my way down to less important scripts when I noticed that removing the Drupal Core Autocomplete code sped the whole site up.</p>
+
+
+
+<p>To this day I still don&#8217;t know why this happened. But this small happening sent me completely off the wrong trail for a whole day. Eventually after exhausting this dead end I went back to analyzing all the other scripts on the page and found the culprit.</p>
+
+
+<pre class="brush: jscript; title: ; notranslate">
+$('body').on(&quot;DOMSubtreeModified&quot;, function() {
+   // some lovely stuff
+});
+</pre>
+
+
+<p>I couldn&#8217;t believe it.</p>
+]]></content:encoded>
+							<wfw:commentRss>https://siebert.dev/2019/09/09/performance-fixing/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+							</item>
+		<item>
+		<title>Working with Switches</title>
+		<link>https://siebert.dev/2019/03/11/working-with-switches/</link>
+				<comments>https://siebert.dev/2019/03/11/working-with-switches/#respond</comments>
+				<pubDate>Mon, 11 Mar 2019 07:30:50 +0000</pubDate>
+		<dc:creator><![CDATA[ryan]]></dc:creator>
+				<category><![CDATA[Arcade]]></category>
+		<category><![CDATA[Electronics]]></category>
+
+		<guid isPermaLink="false">https://siebert.dev/?p=1</guid>
+				<description><![CDATA[As part of my ongoing Vewlix Arcade Project today I was experimenting with how a latching switch could be used to swap the audio between headphones and the arcades speakers. The switch uses spade connectors so I had to practice making those connections using a crimping tool which was fairly easy. The switch has 6 [&#8230;]]]></description>
+								<content:encoded><![CDATA[
+<p>As part of my ongoing Vewlix Arcade Project today I was experimenting with how a latching switch could be used to swap the audio between headphones and the arcades speakers.</p>
+
+
+
+<figure class="wp-block-embed-youtube wp-block-embed is-type-video is-provider-youtube wp-embed-aspect-4-3 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe width="700" height="525" src="https://www.youtube.com/embed/gP8NQyDVcYc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div><figcaption>A simple test I did to work out how a switch works</figcaption></figure>
+
+
+
+<p>The switch uses spade connectors so I had to practice making those connections using a crimping tool which was fairly easy.</p>
+
+
+
+<p>The switch has 6 quick connects. The middle 2 connectors are the output and the top and bottom two connectors are the 2 inputs you can switch with. In the above example I didn&#8217;t use all 6 connectors, but only 3. This is because I ran ground to both LED lights regardless of switch status.</p>
+
+
+
+<p>Not needing to wire ground through the switch is important because when I strip a 3.5mm connection I should get a cable for the left channel, right channel and ground. This gives me just enough inputs on the switch to finish the job! (You can buy switches that support more though).</p>
+
+
+
+<p>After that test I worked on setting up this blog! As of this post its running on a $5 droplet on digital ocean. Originally I was going to use Cloudways but I worked out it would be just as easy to set up myself.</p>
+
+
+
+<p></p>
+]]></content:encoded>
+							<wfw:commentRss>https://siebert.dev/2019/03/11/working-with-switches/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+							</item>
+		<item>
+		<title>Steam Docker Container</title>
+		<link>https://siebert.dev/2017/08/16/steam-docker-container/</link>
+				<comments>https://siebert.dev/2017/08/16/steam-docker-container/#respond</comments>
+				<pubDate>Wed, 16 Aug 2017 02:00:24 +0000</pubDate>
+		<dc:creator><![CDATA[ryan]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">https://siebert.dev/?p=455</guid>
+				<description><![CDATA[Recently I decided to try run steam in a docker container. Why you ask? Well… for a couple of reasons. My Internet is really slow &#8211; about 800Kbs max. When I want to download a game thats 40GB+ that can take a couple of days. So it makes sense for my NAS which is always [&#8230;]]]></description>
+								<content:encoded><![CDATA[
+<p>Recently I decided to try run steam in a docker container.</p>
+
+
+
+<p>Why you ask? Well… for a couple of reasons.</p>
+
+
+
+<ol><li>My Internet is really slow &#8211; about 800Kbs max. When I want to download a game thats 40GB+ that can take a couple of days. So it makes sense for my NAS which is always on to do this work.</li><li>My NAS has a lot of hard drive space and my PC has 500GB of SSD space.</li><li>Keeping games up to date will be better with an always on device.</li><li>Scheduling &#8211; haven’t got this working yet <img src="https://s.w.org/images/core/emoji/12.0.0-1/72x72/1f641.png" alt="🙁" class="wp-smiley" style="height: 1em; max-height: 1em;" /></li></ol>
+
+
+
+<h3 id="what-i-needed">What I needed</h3>
+
+
+
+<ul><li>I need steam to download the 64 bit windows version of games but on linux</li><li>As the docker container is headless I need a way to view the GUI of steam</li><li>I needed a way to transfer these files from my NAS to my PC while playing the game</li></ul>
+
+
+
+<h3 id="what-i-did">What I did</h3>
+
+
+
+<ul><li>The docker container downloads the Windows Steam 64 bit .exe and runs it in 64 bit wine</li><li>It then outputs the GUI to&nbsp;<a href="https://guacamole.incubator.apache.org/">Apache Guacamole</a>&nbsp;which lets me access Steam through the web browser on my local network</li><li>Games are downloaded via the dockerized steam to the mounted drives in the container</li><li>The mounted drives are available via SAMBA for my gaming pc</li><li>My gaming PC adds steam library folder from the mounted drives and they are available for playing off my local network!</li></ul>
+
+
+
+<h3 id="current-issues">Current issues</h3>
+
+
+
+<ul><li>When the games are downloaded they often have incorrect permissions e.g. DLL’s are not executable &#8211; I might need to write a little cron job to fix this</li><li>On first install sometimes steam doesnt start back up &#8211; this can be fixed by stopping and starting the container</li><li>When steam updates sometimes it results in issues with wine &#8211; I could disable updating by modifying the write permissions of the steam folder.</li></ul>
+
+
+
+<h3 id="todo">TODO</h3>
+
+
+
+<ol><li>Fix some of the issues above</li><li>Upload container to docker hub</li><li>Add images to this article</li><li>Schedule the container to go up and down at certain times (The issue is I could get logged out of steam when I log in on my gaming PC. I need a way to handle logging back in)</li></ol>
+]]></content:encoded>
+							<wfw:commentRss>https://siebert.dev/2017/08/16/steam-docker-container/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+							</item>
+		<item>
+		<title>SD Card Testing on Mac</title>
+		<link>https://siebert.dev/2016/12/07/sd-card-testing-on-mac/</link>
+				<comments>https://siebert.dev/2016/12/07/sd-card-testing-on-mac/#respond</comments>
+				<pubDate>Wed, 07 Dec 2016 02:00:24 +0000</pubDate>
+		<dc:creator><![CDATA[ryan]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">https://siebert.dev/?p=453</guid>
+				<description><![CDATA[Intro I’m buying a new camera and need a cheap class 10 SD Card. So I picked up one of the&#160;Chinese Mixza 64GB&#160;cards you can find on aliexpress and the likes for only $26 delivered. The problem with buying chinese storage is that often, you get scammed. I’ve been scammed before &#8211; writing files to [&#8230;]]]></description>
+								<content:encoded><![CDATA[
+<h2 id="intro">Intro</h2>
+
+
+
+<p>I’m buying a new camera and need a cheap class 10 SD Card. So I picked up one of the&nbsp;<a href="http://www.gearbest.com/memory-cards/pp_337822.html">Chinese Mixza 64GB</a>&nbsp;cards you can find on aliexpress and the likes for only $26 delivered.</p>
+
+
+
+<p>The problem with buying chinese storage is that often, you get scammed. I’ve been scammed before &#8211; writing files to a USB stick that says its X amount of GB but it just overwrites itself &#8211; not great.</p>
+
+
+
+<p>If I was on a PC I would install h2testw and be good to go. But what do you use on a MAC?</p>
+
+
+
+<h2 id="how-to-test-sd-cards-on-mac">How to test SD cards on MAC</h2>
+
+
+
+<p>Use&nbsp;<a href="https://github.com/AltraMayor/f3">F3</a></p>
+
+
+
+<p>Install</p>
+
+
+
+<p><code>brew install f3</code></p>
+
+
+
+<p>Test write speed + storage space</p>
+
+
+
+<p><code>f3write /Volumes/NameOfSDCard</code></p>
+
+
+
+<p>Test read speed</p>
+
+
+
+<p><code>f3read /Volumes/NameOfSDCard</code></p>
+
+
+
+<h2 id="my-results">My Results</h2>
+
+
+
+<p>Write speed was anywhere from 9.6MB/s to 10.5MB/s</p>
+
+
+
+<p>Storage space was 58.90GB</p>
+
+
+
+<p>Results are okay. I didn’t get scammed and it was cheap so that’s a win in my book.</p>
+]]></content:encoded>
+							<wfw:commentRss>https://siebert.dev/2016/12/07/sd-card-testing-on-mac/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+							</item>
+		<item>
+		<title>VPN ALL THE CONTAINERS!!!!</title>
+		<link>https://siebert.dev/2016/11/22/vpn-all-the-containers/</link>
+				<comments>https://siebert.dev/2016/11/22/vpn-all-the-containers/#respond</comments>
+				<pubDate>Tue, 22 Nov 2016 02:08:05 +0000</pubDate>
+		<dc:creator><![CDATA[ryan]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">https://siebert.dev/?p=457</guid>
+				<description><![CDATA[Recently I’ve decided to up my OPSEC just a little bit by VPN’ing my containers. What Ive done is use an OpenVPN client container which my other contains use as their network. I then expose the relevant ports in the OpenVPN container that the underlying containers use. Here is an example of my IRC Client. [&#8230;]]]></description>
+								<content:encoded><![CDATA[
+<p>Recently I’ve decided to up my OPSEC just a little bit by VPN’ing my containers.</p>
+
+
+
+<p>What Ive done is use an OpenVPN client container which my other contains use as their network. I then expose the relevant ports in the OpenVPN container that the underlying containers use. Here is an example of my IRC Client.</p>
+
+
+
+<p><strong>OpenVPN Container</strong></p>
+
+
+
+<p>You need to put your OpenVPN .auth, .cert and .conf in the data directory</p>
+
+
+<pre class="brush: plain; title: ; notranslate">
+version: '2'
+services:
+    openvpn:
+        command: -r LOCAL_IP_ADDRESS_HERE/24 -f
+        restart: always
+        dns: 8.8.8.8
+        image: dperson/openvpn-client:latest
+        cap_add:
+          - NET_ADMIN
+        devices:
+          - /dev/net/tun:/dev/net/tun
+        volumes:
+          - /data_dir_here:/vpn
+        ports:
+          - &quot;PORT_TO_EXPOSE:PORT_OF_IRC&quot;
+</pre>
+
+
+<p><strong>Convos IRC Client Container</strong></p>
+
+
+<pre class="brush: plain; title: ; notranslate">
+convos:
+   restart: always
+   image: nordaaker/convos:latest
+   net: container:openvpnclient_openvpn_1
+   volumes:
+   - /tank/Application Data/convos:/data
+</pre>
+
+
+<p>I did the Convos Docker Compose in V1 as its easier to define the net command. In V2 they have changed it around and made it a lot more confusing :S</p>
+
+
+
+<p>After you do that you should be able to access Convos and see your IRC client reporting the IP address of your VPN yay!</p>
+]]></content:encoded>
+							<wfw:commentRss>https://siebert.dev/2016/11/22/vpn-all-the-containers/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+							</item>
+		<item>
+		<title>PVR Slackbot</title>
+		<link>https://siebert.dev/2016/11/12/pvr-slackbot/</link>
+				<comments>https://siebert.dev/2016/11/12/pvr-slackbot/#respond</comments>
+				<pubDate>Sat, 12 Nov 2016 02:00:41 +0000</pubDate>
+		<dc:creator><![CDATA[ryan]]></dc:creator>
+				<category><![CDATA[Development]]></category>
+
+		<guid isPermaLink="false">https://siebert.dev/?p=447</guid>
+				<description><![CDATA[I’ve made a&#160;Slackbot&#160;that interacts with both the&#160;CouchPotato&#160;and&#160;Sonarr&#160;API and allows you to add movies and tv shows to your wanted/monitored lists via direct messages to the bot. Its written in Node JS using the&#160;Botkit&#160;framework. Please give it a download or use this&#160;docker image&#160;and run it by filling out this docker-compose.yml Any feedback/bug reports can be done [&#8230;]]]></description>
+								<content:encoded><![CDATA[
+<p>I’ve made a&nbsp;<a href="https://github.com/Siebes/pvr-slackbot">Slackbot</a>&nbsp;that interacts with both the&nbsp;<a href="https://couchpota.to/">CouchPotato</a>&nbsp;and&nbsp;<a href="https://github.com/Sonarr/Sonarr">Sonarr</a>&nbsp;API and allows you to add movies and tv shows to your wanted/monitored lists via direct messages to the bot. Its written in Node JS using the&nbsp;<a href="https://github.com/howdyai/botkit">Botkit</a>&nbsp;framework. Please give it a download or use this&nbsp;<a href="https://hub.docker.com/r/siebes/pvr-slackbot/">docker image</a>&nbsp;and run it by filling out this docker-compose.yml</p>
+
+
+<pre class="brush: plain; title: ; notranslate">
+version: '2'
+services:
+  pvr-slackbot:
+    restart: always
+    image: siebes/pvr-slackbot:latest
+    environment:
+    - &quot;SLACK_TOKEN=&quot;
+    - &quot;SONARR_KEY=&quot;
+    - &quot;SONARR_HOST=&quot;
+    - &quot;SONARR_PORT=&quot;
+    - &quot;CP_KEY=&quot;
+    - &quot;CP_HOST=&quot;
+    - &quot;CP_PORT=&quot;
+</pre>
+
+
+<p>Any feedback/bug reports can be done via the github page. Pull requests are also welcome.</p>
+]]></content:encoded>
+							<wfw:commentRss>https://siebert.dev/2016/11/12/pvr-slackbot/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+							</item>
+		<item>
+		<title>XSS for greater good</title>
+		<link>https://siebert.dev/2016/10/31/xss-for-greater-good/</link>
+				<comments>https://siebert.dev/2016/10/31/xss-for-greater-good/#respond</comments>
+				<pubDate>Mon, 31 Oct 2016 02:00:35 +0000</pubDate>
+		<dc:creator><![CDATA[ryan]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">https://siebert.dev/?p=450</guid>
+				<description><![CDATA[I started using Muximux as a landing page for my HTPC. Its a great app that runs your other apps in frames. Frames however can cause issues with CORS request resulting in blank pages if the app returns the header X-Frame-Options:sameorigin The problem is a lot of the apps I run have this header! Jenkins… [&#8230;]]]></description>
+								<content:encoded><![CDATA[
+<p>I started using Muximux as a landing page for my HTPC. Its a great app that runs your other apps in frames.</p>
+
+
+
+<p>Frames however can cause issues with CORS request resulting in blank pages if the app returns the header <code>X-Frame-Options:sameorigin</code> </p>
+
+
+
+<p>The problem is a lot of the apps I run have this header! Jenkins… Sonarqube… Nexus…</p>
+
+
+
+<p>The README file suggests users to install an Ignore X-Frame headers plugin allowing all pages to render iframes from different origins but this is probably not a great idea, plus its not portable to other machines as well on my network.</p>
+
+
+
+<p>There’s currently a closed issue on the Github repository for adding a feature to open links in new tab.</p>
+
+
+
+<p>So I implemented a pull request for this feature… lol JK… I’ve done something a lot more in my style! XSS Attack!!!!!</p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter"><img src="https://siebert.dev/wp-content/uploads/2019/06/rdAIRKW-1.png" alt="" class="wp-image-451" srcset="https://siebert.dev/wp-content/uploads/2019/06/rdAIRKW-1.png 448w, https://siebert.dev/wp-content/uploads/2019/06/rdAIRKW-1-300x182.png 300w, https://siebert.dev/wp-content/uploads/2019/06/rdAIRKW-1-434x264.png 434w" sizes="(max-width: 448px) 100vw, 448px" /></figure></div>
+
+
+
+<p>Landing pages on Muximux look like the above.</p>
+
+
+<pre class="brush: xml; title: ; notranslate">
+&lt;a href=&quot;link_you_enter_here&quot; target=&quot;_self&quot; title=&quot;Title Here&quot;&gt;
+  &lt;button class=&quot;float&quot;&gt;Title Here&lt;/button&gt;
+&lt;/a&gt;
+</pre>
+
+
+<p>You enter a link in the settings menu and it inserts the string you entered into&nbsp;<code>link_you_enter_here</code>.</p>
+
+
+
+<p>Then when you click the button it renders the link in a frame and the CORS all fail so you get a white page.</p>
+
+
+
+<p>lol you can probably see what I did by now <code>link_you_enter_here\" target=\"_blank\" title=\"Title Here\">&lt;br \" </code></p>
+
+
+
+<p>This gives you</p>
+
+
+<pre class="brush: xml; title: ; notranslate">
+&lt;a href=&quot;link_you_enter_here&quot; target=&quot;_blank&quot; title=&quot;Title Here&quot;&gt;
+  &lt;br &quot;&quot;=&quot;&quot; target=&quot;_self&quot; title=&quot;Title Here&quot;&gt;
+  &lt;button class=&quot;float&quot;&gt;Title Here&lt;/button&gt;
+&lt;/a&gt;
+</pre>
+
+
+<p>So then when you click on the button because we changed the target from&nbsp;<code>_self</code>&nbsp;to&nbsp;<code>_blank</code>&nbsp;it will open in a new tab.</p>
+
+
+
+<p>FEATURE IMPLEMENTED.</p>
+]]></content:encoded>
+							<wfw:commentRss>https://siebert.dev/2016/10/31/xss-for-greater-good/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+							</item>
+	</channel>
+</rss>
